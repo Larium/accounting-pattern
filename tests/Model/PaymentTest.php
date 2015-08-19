@@ -151,6 +151,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
     private function assertSuccessPayment()
     {
         $this->assertEquals(Payment::PAID, $this->payment->getState());
+        $this->assertNotNull($this->payment->getTransactionId());
     }
 
     private function assertFailedPayment()
