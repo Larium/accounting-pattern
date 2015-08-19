@@ -67,7 +67,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($this->payment->getTransactionId());
     }
 
-    public function getPaymentMethod()
+    private function getPaymentMethod()
     {
         return new PaymentMethod();
     }
