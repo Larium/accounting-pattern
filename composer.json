@@ -1,0 +1,28 @@
+{
+    "name": "larium/freemium",
+    "description": "",
+    "keywords": [""],
+    "type": "",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andreas Kollaros",
+            "email": "andreaskollaros@ymail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "aktive_merchant/aktive_merchant": "dev-dev-1.1"
+    },
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Larium\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Larium\\": "tests/"
+        }
+    }
+}
