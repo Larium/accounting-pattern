@@ -8,6 +8,6 @@ class PaymentMethod implements PaymentMethodInterface
 {
     public function pay($amount)
     {
-        return new Response(true);
+        return new Response(true, 'PM123456');
     }
 }

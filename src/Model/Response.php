@@ -8,13 +8,21 @@ class Response
 {
     protected $success;
 
-    public function __construct($success)
+    protected $transactionId;
+
+    public function __construct($success, $transactionId = null)
     {
-        $this->success = $success;
+        $this->success       = $success;
+        $this->transactionId = $transactionId;
     }
 
     public function isSuccess()
     {
         return true === $this->success;
+    }
+
+    public function getTransactionId()
+    {
+        return $this->transactionId;
     }
 }

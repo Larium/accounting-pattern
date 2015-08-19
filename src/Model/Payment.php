@@ -17,6 +17,8 @@ class Payment
 
     protected $amount;
 
+    protected $transactionId;
+
     public function getState()
     {
         return $this->state;
@@ -35,6 +37,7 @@ class Payment
         $response = $method->pay($this->amount);
 
         if ($response->isSuccess()) {
+            $this->transactionId = $response->getTransactionId();
             return $this->state = static::PAID;
         }
 
@@ -49,5 +52,10 @@ class Payment
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    public function getTransactionId()
+    {
+        return $this->transactionId;
     }
 }

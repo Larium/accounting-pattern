@@ -53,20 +53,34 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
     {
         $this->payment->setAmount(100);
 
-        $method = $this->getMockBuilder('Larium\Model\PaymentMethod')
-                         ->setMethods(array('pay'))
-                         ->getMock();
-        $method->expects($this->once())
-            ->method('pay')
-            ->will($this->returnValue(new Response(false)));
-
-        $this->payment->pay($method);
+        $this->payment->pay($this->getFailedResponseMethod());
 
         $this->assertEquals(Payment::FAILED, $this->payment->getState());
+    }
+
+    public function testShouldHaveATransactionIdAfterSuccessPay()
+    {
+        $this->payment->setAmount(100);
+
+        $this->payment->pay($this->getPaymentMethod());
+
+        $this->assertNotNull($this->payment->getTransactionId());
     }
 
     public function getPaymentMethod()
     {
         return new PaymentMethod();
+    }
+
+    private function getFailedResponseMethod()
+    {
+        $method = $this->getMockBuilder('Larium\Model\PaymentMethod')
+            ->setMethods(array('pay'))
+            ->getMock();
+        $method->expects($this->once())
+            ->method('pay')
+            ->will($this->returnValue(new Response(false)));
+
+        return $method;
     }
 }
