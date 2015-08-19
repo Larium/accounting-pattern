@@ -46,6 +46,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         $this->payment->pay($this->getPaymentMethod());
 
         $this->assertEquals(Payment::PAID, $this->payment->getState());
+        $this->assertTrue(is_int($this->payment->getAmount()));
     }
 
     public function testFailedPayment()

@@ -17,9 +17,4 @@ class Response
     {
         return true === $this->success;
     }
-
-    public function isFailed()
-    {
-        return false === $this->success;
-    }
 }
