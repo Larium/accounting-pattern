@@ -15,6 +15,8 @@ class CreditCardMethod implements PaymentMethodInterface
 
     protected $gateway;
 
+    protected $actionParams = array();
+
     public function __construct(CreditCard $creditCard, Gateway $gateway)
     {
         $this->creditCard = $creditCard;
@@ -24,7 +26,7 @@ class CreditCardMethod implements PaymentMethodInterface
     public function pay($amount)
     {
         try {
-            $response = $this->gateway->purchase($amount, $this->creditCard);
+            $response = $this->gateway->purchase($amount, $this->creditCard, $this->actionParams);
         } catch (AktiveMerchantException $e) {
             throw new GatewayException($e->getMessage());
         }
@@ -34,5 +36,10 @@ class CreditCardMethod implements PaymentMethodInterface
             $response->authorization(),
             $response->message()
         );
+    }
+
+    public function setActionParams(array $params)
+    {
+        $this->actionParams = $params;
     }
 }
