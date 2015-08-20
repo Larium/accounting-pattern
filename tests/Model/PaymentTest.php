@@ -6,6 +6,7 @@ namespace Larium\Model;
 
 use AktiveMerchant\Billing\CreditCard;
 use AktiveMerchant\Billing\Gateways\Bogus;
+use AktiveMerchant\Billing\Base;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
@@ -110,7 +111,6 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
         $this->payment->setAmount(100);
         $this->payment->pay($this->getCreditCardMethod('exception'));
-
     }
 
     private function getPaymentMethod()
@@ -118,9 +118,9 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         return new PaymentMethod();
     }
 
-    private function getCreditCardMethod($status = 'success')
+    private function getCreditCardMethod($status = 'success', $gateway = 'bogus', array $options = array())
     {
-        return new CreditCardMethod($this->getCreditCard($status), $this->getGateway());
+        return new CreditCardMethod($this->getCreditCard($status), $this->getGateway($gateway, $options));
     }
 
     private function getCreditCard($status)
@@ -147,9 +147,9 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    private function getGateway()
+    private function getGateway($gateway, array $options = array())
     {
-        return new Bogus();
+        return Base::gateway($gateway, $options);
     }
 
     private function getFailedResponseMethod()
@@ -173,5 +173,11 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
     private function assertFailedPayment()
     {
         $this->assertEquals(Payment::FAILED, $this->payment->getState());
+    }
+
+    private function getFixtures()
+    {
+        $ini = parse_ini_file(__DIR__ . "/../fixtures.ini", true);
+        return new \ArrayIterator($ini);
     }
 }
