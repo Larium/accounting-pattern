@@ -21,6 +21,22 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Payment::PENDING, $this->payment->getState());
     }
 
+    public function testNewPaymentShouldHaveAReferenceId()
+    {
+        $this->assertNotNull($this->payment->getReferenceId());
+    }
+
+    public function testPaymentShouldHaveUniqueReferenceId()
+    {
+        $ids = [];
+
+        for ($i = 0; $i < 1000; $i++) {
+            $p = new Payment();
+            $this->assertFalse(in_array($p->getReferenceId(), $ids));
+            $ids[] = $p->getReferenceId();
+        }
+    }
+
     public function testPaymentShouldNotBePaidWithoutAnAmount()
     {
         $this->setExpectedException(

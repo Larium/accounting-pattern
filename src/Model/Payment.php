@@ -19,6 +19,13 @@ class Payment
 
     protected $transactionId;
 
+    protected $referenceId;
+
+    public function __construct()
+    {
+        $this->referenceId = $this->generateReferenceId();
+    }
+
     public function getState()
     {
         return $this->state;
@@ -57,5 +64,15 @@ class Payment
     public function getTransactionId()
     {
         return $this->transactionId;
+    }
+
+    public function getReferenceId()
+    {
+        return $this->referenceId;
+    }
+
+    private function generateReferenceId()
+    {
+       return substr(uniqid('pm_', true), 0, -9);
     }
 }
