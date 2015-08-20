@@ -10,10 +10,13 @@ class Response
 
     protected $transactionId;
 
-    public function __construct($success, $transactionId = null)
+    protected $message;
+
+    public function __construct($success, $transactionId = null, $message = null)
     {
         $this->success       = $success;
         $this->transactionId = $transactionId;
+        $this->message       = $message;
     }
 
     public function isSuccess()
@@ -24,5 +27,10 @@ class Response
     public function getTransactionId()
     {
         return $this->transactionId;
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
     }
 }

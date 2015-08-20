@@ -29,6 +29,10 @@ class CreditCardMethod implements PaymentMethodInterface
             throw new GatewayException($e->getMessage());
         }
 
-        return new Response($response->success(), $response->authorization());
+        return new Response(
+            $response->success(),
+            $response->authorization(),
+            $response->message()
+        );
     }
 }
