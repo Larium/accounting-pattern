@@ -45,10 +45,14 @@ class Payment
 
         if ($response->isSuccess()) {
             $this->transactionId = $response->getTransactionId();
-            return $this->state = static::PAID;
+            $this->state = static::PAID;
+
+            return $response;
         }
 
         $this->state = static::FAILED;
+
+        return $response;
     }
 
     public function setAmount($amount)
