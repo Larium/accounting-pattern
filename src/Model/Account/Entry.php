@@ -16,7 +16,15 @@ class Entry
 
     protected $description;
 
-    public function __construct($amount, $date, Account $account, Transaction $transaction)
+    /**
+     * @param mixed $amount
+     * @param mixed $date
+     * @param Account $account
+     * @param Transaction $transaction
+     * @param mixed $description
+     * @return void
+     */
+    public function __construct($amount, $date, Account $account, Transaction $transaction, $description = null)
     {
         $this->amount       = $amount;
         $this->createdAt    = $date;
@@ -26,6 +34,7 @@ class Entry
 
     public function post()
     {
+        $this->account->getEntries()->add($this);
     }
 
     public function getAmount()
