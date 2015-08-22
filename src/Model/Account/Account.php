@@ -12,9 +12,13 @@ class Account
 
     protected $entries;
 
-    public function __construct()
+    protected $description;
+
+    public function __construct($description)
     {
         $this->entries = new ArrayCollection();
+
+        $this->description = $description;
     }
 
     public function getBalance()
@@ -25,5 +29,10 @@ class Account
     public function getEntries()
     {
         return $this->entries;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
