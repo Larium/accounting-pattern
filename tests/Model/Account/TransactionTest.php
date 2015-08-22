@@ -4,17 +4,19 @@
 
 namespace Larium\Model\Account;
 
+use Money\Money;
+
 class TransactionTest extends \PHPUnit_Framework_TestCase
 {
     public function testTwoLeggedAccountTransaction()
     {
-        $seller = new Account();
-        $buyer  = new Account();
+        $seller = new Account('Seller');
+        $buyer  = new Account('Buyer');
 
         $transaction = new Transaction();
 
-        $transaction->add(-1000, $buyer); # get 10 from buyer account
-        $transaction->add(1000, $seller); # set 10 to seller account
+        $transaction->add(Money::EUR(-1000), $buyer); # get 10 from buyer account
+        $transaction->add(Money::EUR(1000), $seller); # set 10 to seller account
         $transaction->post();
 
         # Both account should have entries.
@@ -26,27 +28,36 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($seller->getEntries()->count() == 1);
 
         # Buyer entry should have negative amount
-        $this->assertTrue($buyer->getEntries()->first()->getAmount() < 0);
+        $this->assertTrue($buyer->getEntries()->first()->getAmount()->lessThan(Money::EUR(0)));
 
         # Seller entry should have positive amount
-        $this->assertTrue($seller->getEntries()->first()->getAmount() > 0);
+        $this->assertTrue($seller->getEntries()->first()->getAmount()->greaterThan(Money::EUR(0)));
     }
 
     public function testMultiLeggedAccountTransaction()
     {
-        $seller = new Account();
-        $buyer  = new Account();
-        $provider = new Account();
+        $seller    = new Account('Seller');
+        $buyer     = new Account('Buyer');
+        $provider  = new Account('Provider');
+        $affiliate = new Account('Affiliate');
 
-        $amount     = 1000;
+        $amount     = Money::EUR(1000);
         $feePercent = 2;
-        $fee        = $amount * 2 / 100; # 20
+        $afflilPerc = 15;
+        $fee        = $amount->multiply($feePercent)->divide(100); # 20
+        $affilFee   = $fee->multiply($afflilPerc)->divide(100); # 3
 
         $transaction = new Transaction();
 
-        $transaction->add(-$amount, $buyer); # get 10 from buyer account
-        $transaction->add($fee, $provider); # provider will keep 0.2
-        $transaction->add($amount - $fee, $seller); # seller will get 9.8
+        $transaction->add($amount->multiply(-1), $buyer); # get 10 from buyer account
+        $transaction->add($fee->subtract($affilFee), $provider); # provider will keep 0.17
+        $transaction->add($affilFee, $affiliate); # affiliate will keep 0.03
+        $transaction->add($amount->subtract($fee), $seller); # seller will get 9.8
         $transaction->post();
+
+        echo PHP_EOL;
+        foreach ($transaction->getEntries() as $entry) {
+            echo $entry->getAccount()->getDescription() . ' Amount: ' . $entry->getAmount()->getAmount().PHP_EOL;
+        }
     }
 }

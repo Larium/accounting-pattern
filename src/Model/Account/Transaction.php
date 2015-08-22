@@ -7,6 +7,7 @@ namespace Larium\Model\Account;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Larium\Exception\UnableToPostException;
+use Money\Money;
 
 class Transaction
 {
@@ -22,7 +23,7 @@ class Transaction
         $this->entries  = new ArrayCollection();
     }
 
-    public function add($amount, Account $account)
+    public function add(Money $amount, Account $account)
     {
         $this->entries->add(
             new Entry($amount, $this->date, $account, $this)
@@ -44,7 +45,7 @@ class Transaction
 
     public function canPost()
     {
-        return 0 === $this->balance();
+        return 0 === $this->balance()->getAmount();
     }
 
     public function getEntries()
@@ -58,9 +59,9 @@ class Transaction
             return 0;
         }
 
-        $balance = 0;
+        $balance = Money::EUR(0);
         foreach ($this->entries as $entry) {
-            $balance += $entry->getAmount();
+            $balance = $balance->add($entry->getAmount());
         }
 
         return $balance;

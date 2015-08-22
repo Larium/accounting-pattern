@@ -4,6 +4,8 @@
 
 namespace Larium\Model\Account;
 
+use Money\Money;
+
 class Entry
 {
     protected $amount;
@@ -24,7 +26,7 @@ class Entry
      * @param mixed $description
      * @return void
      */
-    public function __construct($amount, $date, Account $account, Transaction $transaction, $description = null)
+    public function __construct(Money $amount, $date, Account $account, Transaction $transaction, $description = null)
     {
         $this->amount       = $amount;
         $this->createdAt    = $date;
