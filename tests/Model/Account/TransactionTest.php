@@ -49,15 +49,18 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
         $transaction = new Transaction();
 
-        $transaction->add($amount->multiply(-1), $buyer); # get 10 from buyer account
-        $transaction->add($fee->subtract($affilFee), $provider); # provider will keep 0.17
-        $transaction->add($affilFee, $affiliate); # affiliate will keep 0.03
-        $transaction->add($amount->subtract($fee), $seller); # seller will get 9.8
+        $transaction->add($amount->multiply(-1), $buyer, 'Payment'); # get 10 from buyer account
+        $transaction->add($fee->subtract($affilFee), $provider, 'Provider fee'); # provider will keep 0.17
+        $transaction->add($affilFee, $affiliate, 'Affiliate fee from provider'); # affiliate will keep 0.03
+        $transaction->add($amount->subtract($fee), $seller, 'Deposit to merchant'); # seller will get 9.8
         $transaction->post();
 
         echo PHP_EOL;
         foreach ($transaction->getEntries() as $entry) {
-            echo $entry->getAccount()->getDescription() . ' Amount: ' . $entry->getAmount()->getAmount().PHP_EOL;
+            echo $entry->getAccount()->getDescription()
+                . ' Amount: ' . $entry->getAmount()->getAmount()
+                . ' ['.$entry->getDescription().']'
+                . PHP_EOL;
         }
     }
 }

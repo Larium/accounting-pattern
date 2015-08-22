@@ -23,10 +23,10 @@ class Transaction
         $this->entries  = new ArrayCollection();
     }
 
-    public function add(Money $amount, Account $account)
+    public function add(Money $amount, Account $account, $description = null)
     {
         $this->entries->add(
-            new Entry($amount, $this->date, $account, $this)
+            new Entry($amount, $this->date, $account, $this, $description)
         );
     }
 

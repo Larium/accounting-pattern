@@ -32,6 +32,7 @@ class Entry
         $this->createdAt    = $date;
         $this->account      = $account;
         $this->transaction  = $transaction;
+        $this->description  = $description;
     }
 
     public function post()
