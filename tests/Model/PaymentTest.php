@@ -7,6 +7,7 @@ namespace Larium\Model;
 use AktiveMerchant\Billing\CreditCard;
 use AktiveMerchant\Billing\Gateways\Bogus;
 use AktiveMerchant\Billing\Base;
+use Money\Money;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,30 +49,17 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         $this->payment->pay($this->getPaymentMethod());
     }
 
-    public function testPaymentShouldNotBePaidWithoutAValidAmount()
-    {
-        $this->payment->setAmount('100 cents');
-
-        $this->setExpectedException(
-            'Larium\Exception\InvalidAmountException',
-            'Payment amount must be an integer.'
-        );
-
-        $this->payment->pay($this->getPaymentMethod());
-    }
-
     public function testPaidPaymentShouldHavePaidState()
     {
-        $this->payment->setAmount(100);
+        $this->payment->setAmount(Money::EUR(100));
         $this->payment->pay($this->getPaymentMethod());
 
         $this->assertSuccessPayment();
-        $this->assertTrue(is_int($this->payment->getAmount()));
     }
 
     public function testFailedPayment()
     {
-        $this->payment->setAmount(100);
+        $this->payment->setAmount(Money::EUR(100));
 
         $this->payment->pay($this->getFailedResponseMethod());
 
@@ -80,7 +68,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldHaveATransactionIdAfterSuccessPay()
     {
-        $this->payment->setAmount(100);
+        $this->payment->setAmount(Money::EUR(100));
 
         $this->payment->pay($this->getPaymentMethod());
 
@@ -89,7 +77,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldPayWithCreditCardMethod()
     {
-        $this->payment->setAmount(100);
+        $this->payment->setAmount(Money::EUR(100));
 
         $this->payment->pay($this->getCreditCardMethod());
 
@@ -98,7 +86,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldFailWithCreditCardMethod()
     {
-        $this->payment->setAmount(100);
+        $this->payment->setAmount(Money::EUR(100));
 
         $this->payment->pay($this->getCreditCardMethod('failed'));
 
@@ -109,7 +97,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Larium\Exception\GatewayException');
 
-        $this->payment->setAmount(100);
+        $this->payment->setAmount(Money::EUR(100));
         $this->payment->pay($this->getCreditCardMethod('exception'));
     }
 

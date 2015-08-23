@@ -4,9 +4,11 @@
 
 namespace Larium\Model;
 
+use Money\Money;
+
 class PaymentMethod implements PaymentMethodInterface
 {
-    public function pay($amount)
+    public function pay(Money $amount)
     {
         return new Response(true, 'PM123456');
     }

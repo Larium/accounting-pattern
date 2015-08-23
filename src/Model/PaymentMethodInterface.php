@@ -4,7 +4,9 @@
 
 namespace Larium\Model;
 
+use Money\Money;
+
 interface PaymentMethodInterface
 {
-    public function pay($amount);
+    public function pay(Money $amount);
 }

@@ -6,6 +6,7 @@ namespace Larium\Model;
 
 use Larium\Exception\InvalidAmountException;
 use Larium\Exception\RequiredAmountException;
+use Money\Money;
 
 class Payment
 {
@@ -37,10 +38,6 @@ class Payment
             throw new RequiredAmountException('Payment amount is required.');
         }
 
-        if (!is_int($this->amount)) {
-            throw new InvalidAmountException('Payment amount must be an integer.');
-        }
-
         $response = $method->pay($this->amount);
 
         if ($response->isSuccess()) {
@@ -55,7 +52,7 @@ class Payment
         return $response;
     }
 
-    public function setAmount($amount)
+    public function setAmount(Money $amount)
     {
         $this->amount = $amount;
     }
