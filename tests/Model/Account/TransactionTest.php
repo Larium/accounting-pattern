@@ -39,27 +39,28 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $seller    = new Account('Seller');
         $buyer     = new Account('Buyer');
         $provider  = new Account('Provider');
-        $affiliate = new Account('Affiliate');
+        $bank      = new Account('Bank');
 
-        $amount     = Money::EUR(1000);
-        $feePercent = 2;
-        $afflilPerc = 15;
-        $fee        = $amount->multiply($feePercent)->divide(100); # 20
-        $affilFee   = $fee->multiply($afflilPerc)->divide(100); # 3
+        $providerFee = new Fee(2.4, 20);
+        $bankFee     = new Fee(0.4, 10);
 
-        $transaction = new Transaction();
+        $amount = Money::EUR(1000);
 
-        $transaction->add($amount->multiply(-1), $buyer, 'Payment'); # get 10 from buyer account
-        $transaction->add($fee->subtract($affilFee), $provider, 'Provider fee'); # provider will keep 0.17
-        $transaction->add($affilFee, $affiliate, 'Affiliate fee from provider'); # affiliate will keep 0.03
-        $transaction->add($amount->subtract($fee), $seller, 'Deposit to merchant'); # seller will get 9.8
-        $transaction->post();
+        $prvAmount  = $providerFee->apply($amount);
+        $bankAmount = $bankFee->apply($amount);
 
-        echo PHP_EOL;
-        foreach ($transaction->getEntries() as $entry) {
+        $trx = new Transaction();
+
+        $trx->add($amount->multiply(-1), $buyer, Entry::PAYMENT);
+        $trx->add($amount->subtract($prvAmount), $seller, Entry::PAYMENT);
+        $trx->add($prvAmount->subtract($bankAmount), $provider, Entry::FEE);
+        $trx->add($bankAmount, $bank, Entry::FEE);
+        $trx->post();
+
+        foreach ($trx->getEntries() as $entry) {
             echo $entry->getAccount()->getDescription()
                 . ' Amount: ' . $entry->getAmount()->getAmount()
-                . ' ['.$entry->getDescription().']'
+                . ' ['.$entry->getType().']'
                 . PHP_EOL;
         }
     }

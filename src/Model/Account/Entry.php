@@ -5,9 +5,19 @@
 namespace Larium\Model\Account;
 
 use Money\Money;
+use DateTime;
+use Larium\Model\DescriptorInterface;
 
 class Entry
 {
+    const DEPOSIT  = 1;
+    const WITHDRAW = 2;
+
+    private static $types = array(
+        1 => 'deposit',
+        2 => 'withdraw'
+    );
+
     protected $amount;
 
     protected $date;
@@ -16,23 +26,26 @@ class Entry
 
     protected $transaction;
 
-    protected $description;
+    protected $descriptor;
 
-    /**
-     * @param mixed $amount
-     * @param mixed $date
-     * @param Account $account
-     * @param Transaction $transaction
-     * @param mixed $description
-     * @return void
-     */
-    public function __construct(Money $amount, $date, Account $account, Transaction $transaction, $description = null)
-    {
+    protected $type;
+
+    public function __construct(
+        Money $amount,
+        DateTime $date,
+        Account $account,
+        Transaction $transaction,
+        DescriptorInterface $descriptor,
+        $type
+    ) {
         $this->amount       = $amount;
         $this->createdAt    = $date;
         $this->account      = $account;
         $this->transaction  = $transaction;
-        $this->description  = $description;
+        $this->descriptor   = $descriptor;
+        $this->type         = $type;
+
+        $this->descriptor->addEntry($this);
     }
 
     public function post()
@@ -43,6 +56,13 @@ class Entry
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    public function getAmountString()
+    {
+        return $this->amount->getCurrency()->getName()
+            . ' '
+            . number_format($this->amount->getAmount() / 100, 2);
     }
 
     public function getDate()
@@ -60,8 +80,15 @@ class Entry
         return $this->transaction;
     }
 
-    public function getDescription()
+    public function getDescriptor()
     {
-        return $this->description;
+        return $this->descriptor;
+    }
+
+    public function getTypeString()
+    {
+        return array_key_exists($this->type, static::$types)
+            ? static::$types[$this->type]
+            : 'unknown';
     }
 }

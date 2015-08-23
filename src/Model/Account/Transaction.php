@@ -7,6 +7,7 @@ namespace Larium\Model\Account;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Larium\Exception\UnableToPostException;
+use Larium\Money\DescriptorInterface;
 use Money\Money;
 
 class Transaction
@@ -23,10 +24,10 @@ class Transaction
         $this->entries  = new ArrayCollection();
     }
 
-    public function add(Money $amount, Account $account, $description = null)
+    public function add(Money $amount, Account $account, $descriptor, $type)
     {
         $this->entries->add(
-            new Entry($amount, $this->date, $account, $this, $description)
+            new Entry($amount, $this->date, $account, $this, $descriptor, $type)
         );
     }
 
@@ -51,6 +52,13 @@ class Transaction
     public function getEntries()
     {
         return $this->entries;
+    }
+
+    public function getLinkedEntry(Entry $entry)
+    {
+        return $this->entries->filter(function($e) use ($entry) {
+            return $e !== $entry;
+        })->first();
     }
 
     private function balance()

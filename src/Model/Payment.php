@@ -4,11 +4,13 @@
 
 namespace Larium\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Larium\Exception\InvalidAmountException;
 use Larium\Exception\RequiredAmountException;
 use Money\Money;
+use Larium\Model\Account\Entry;
 
-class Payment
+class Payment implements DescriptorInterface
 {
     const PENDING   = 'pending';
     const PAID      = 'paid';
@@ -22,9 +24,12 @@ class Payment
 
     protected $referenceId;
 
+    protected $entries;
+
     public function __construct()
     {
         $this->referenceId = $this->generateReferenceId();
+        $this->entries     = new ArrayCollection();
     }
 
     public function getState()
@@ -75,5 +80,20 @@ class Payment
     private function generateReferenceId()
     {
        return substr(uniqid('pm_', true), 0, -9);
+    }
+
+    public function getDescription()
+    {
+        return $this->getReferenceId();
+    }
+
+    public function getEntries()
+    {
+        return $this->entries;
+    }
+
+    public function addEntry(Entry $entry)
+    {
+        $this->entries->add($entry);
     }
 }
