@@ -24,10 +24,10 @@ class CreditCardMethod implements PaymentMethodInterface
         $this->gateway    = $gateway;
     }
 
-    public function pay(Money $amount)
+    public function pay(Money $money)
     {
         try {
-            $response = $this->gateway->purchase($this->amount($amount), $this->creditCard, $this->actionParams);
+            $response = $this->gateway->purchase($this->amount($money), $this->creditCard, $this->actionParams);
         } catch (AktiveMerchantException $e) {
             throw new GatewayException($e->getMessage());
         }
@@ -44,14 +44,14 @@ class CreditCardMethod implements PaymentMethodInterface
         $this->actionParams = $params;
     }
 
-    private function amount(Money $amount)
+    private function amount(Money $money)
     {
         $format = $this->gateway->money_format();
 
         if ($format == 'dollars') {
-            return number_format($amount->getAmount() / 100, 2, '', '');
+            return number_format($money->getAmount() / 100, 2, '', '');
         }
 
-        return $amount->getAmount();
+        return $money->getAmount();
     }
 }
