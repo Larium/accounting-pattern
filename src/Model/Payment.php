@@ -12,9 +12,11 @@ use Larium\Model\Account\Entry;
 
 class Payment implements PaymentInterface
 {
-    const PENDING   = 'pending';
-    const PAID      = 'paid';
-    const FAILED    = 'failed';
+    const PENDING           = 'pending';
+    const PAID              = 'paid';
+    const FAILED            = 'failed';
+    const REFUNDED          = 'refunded';
+    const PARTIAL_REFUNDED  = 'partial_refunded';
 
     protected $state = self::PENDING;
 
@@ -57,6 +59,23 @@ class Payment implements PaymentInterface
         return $response;
     }
 
+    public function refund(CreditMethod $method, Money $money = null)
+    {
+        $refundMoney = $money ?: $this->amount;
+
+        $response = $method->refund($this->transactionId, $refundMoney);
+
+        if ($response->isSuccess()) {
+            $this->state = static::REFUNDED;
+
+            if ($refundMoney->lessThan($money)) {
+                $this->state = state::PARTIAL_REFUNDED;
+            }
+        }
+
+        return $response;
+    }
+
     public function setAmount(Money $amount)
     {
         $this->amount = $amount;
@@ -77,23 +96,13 @@ class Payment implements PaymentInterface
         return $this->referenceId;
     }
 
-    private function generateReferenceId()
-    {
-       return substr(uniqid('pm_', true), 0, -9);
-    }
-
     public function getDescription()
     {
         return $this->getReferenceId();
     }
 
-    public function getEntries()
+    private function generateReferenceId()
     {
-        return $this->entries;
-    }
-
-    public function addEntry(Entry $entry)
-    {
-        $this->entries->add($entry);
+       return substr(uniqid('pm_', true), 0, -9);
     }
 }

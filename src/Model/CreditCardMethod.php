@@ -39,6 +39,16 @@ class CreditCardMethod implements PaymentMethodInterface
         );
     }
 
+    public function authorize(Money $money)
+    {
+        // code...
+    }
+
+    public function store()
+    {
+        // code...
+    }
+
     public function setActionParams(array $params)
     {
         $this->actionParams = $params;
