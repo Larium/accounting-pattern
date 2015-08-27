@@ -10,7 +10,7 @@ use Larium\Exception\RequiredAmountException;
 use Money\Money;
 use Larium\Model\Account\Entry;
 
-class Payment implements DescriptorInterface
+class Payment implements PaymentInterface
 {
     const PENDING   = 'pending';
     const PAID      = 'paid';
@@ -47,7 +47,7 @@ class Payment implements DescriptorInterface
 
         if ($response->isSuccess()) {
             $this->transactionId = $response->getTransactionId();
-            $this->state = static::PAID;
+            $this->state         = static::PAID;
 
             return $response;
         }
