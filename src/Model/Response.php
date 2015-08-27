@@ -4,7 +4,7 @@
 
 namespace Larium\Model;
 
-class Response
+class Response implements ResponseInterface
 {
     protected $success;
 
