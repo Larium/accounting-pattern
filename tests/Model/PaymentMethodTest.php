@@ -4,6 +4,8 @@
 
 namespace Larium\Model;
 
+use Money\Money;
+
 class PaymentMethodTest extends \PHPUnit_Framework_TestCase
 {
     private $method;
@@ -23,7 +25,7 @@ class PaymentMethodTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldReturnResponseInstanceInPay()
     {
-        $response = $this->method->pay(100);
+        $response = $this->method->pay(Money::EUR(100));
 
         $this->assertInstanceOf(
             'Larium\Model\Response',

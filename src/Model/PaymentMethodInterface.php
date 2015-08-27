@@ -8,5 +8,7 @@ use Money\Money;
 
 interface PaymentMethodInterface
 {
-    public function pay(Money $amount);
+    public function pay(Money $money);
+
+    public function setActionParams(array $params);
 }

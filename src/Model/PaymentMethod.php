@@ -12,4 +12,8 @@ class PaymentMethod implements PaymentMethodInterface
     {
         return new Response(true, 'PM123456');
     }
+
+    public function setActionParams(array $params)
+    {
+    }
 }
