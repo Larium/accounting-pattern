@@ -8,7 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Larium\Exception\InvalidAmountException;
 use Larium\Exception\RequiredAmountException;
 use Money\Money;
-use Larium\Model\Account\Entry;
+use Larium\Model\Method\PaymentMethodInterface;
+use Larium\Model\Method\CreditMethodInterface;
 
 class Payment implements PaymentInterface
 {

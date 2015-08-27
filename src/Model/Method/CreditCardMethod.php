@@ -2,12 +2,14 @@
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-namespace Larium\Model;
+namespace Larium\Model\Method;
 
 use AktiveMerchant\Billing\CreditCard;
 use AktiveMerchant\Billing\Gateway;
 use AktiveMerchant\Billing\Exception as AktiveMerchantException;
 use Larium\Exception\GatewayException;
+use Larium\Model\Method\PaymentMethodInterface;
+use Larium\Model\Response;
 use Money\Money;
 
 class CreditCardMethod implements PaymentMethodInterface

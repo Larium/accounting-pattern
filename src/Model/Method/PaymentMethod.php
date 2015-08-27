@@ -2,8 +2,9 @@
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-namespace Larium\Model;
+namespace Larium\Model\Method;
 
+use Larium\Model\Response;
 use Money\Money;
 
 class PaymentMethod implements PaymentMethodInterface

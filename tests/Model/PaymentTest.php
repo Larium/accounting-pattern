@@ -7,6 +7,8 @@ namespace Larium\Model;
 use AktiveMerchant\Billing\CreditCard;
 use AktiveMerchant\Billing\Gateways\Bogus;
 use AktiveMerchant\Billing\Base;
+use Larium\Model\Method\PaymentMethod;
+use Larium\Model\Method\CreditCardMethod;
 use Money\Money;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
@@ -142,7 +144,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
     private function getFailedResponseMethod()
     {
-        $method = $this->getMockBuilder('Larium\Model\PaymentMethod')
+        $method = $this->getMockBuilder('Larium\Model\Method\PaymentMethod')
             ->setMethods(array('pay'))
             ->getMock();
         $method->expects($this->once())

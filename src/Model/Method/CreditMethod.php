@@ -2,7 +2,7 @@
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-namespace Model;
+namespace Larium\Model\Method;
 
 use AktiveMerchant\Billing\Gateway;
 use AktiveMerchant\Billing\Exception as AktiveMerchantException;

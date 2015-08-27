@@ -2,7 +2,7 @@
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-namespace Larium\Model;
+namespace Larium\Model\Method;
 
 use Money\Money;
 
@@ -18,7 +18,7 @@ class PaymentMethodTest extends \PHPUnit_Framework_TestCase
     public function testShouldImplementInterface()
     {
         $this->assertInstanceOf(
-            'Larium\Model\PaymentMethodInterface',
+            'Larium\Model\Method\PaymentMethodInterface',
             $this->method
         );
     }
