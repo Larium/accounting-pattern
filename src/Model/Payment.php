@@ -5,11 +5,10 @@
 namespace Larium\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Larium\Exception\InvalidAmountException;
 use Larium\Exception\RequiredAmountException;
-use Money\Money;
 use Larium\Model\Method\PaymentMethodInterface;
 use Larium\Model\Method\CreditMethodInterface;
+use Money\Money;
 
 class Payment implements PaymentInterface
 {
@@ -21,7 +20,7 @@ class Payment implements PaymentInterface
 
     protected $state = self::PENDING;
 
-    protected $amount;
+    protected $amount = 0;
 
     protected $transactionId;
 
@@ -29,7 +28,8 @@ class Payment implements PaymentInterface
 
     public function __construct()
     {
-        $this->referenceId = $this->generateReferenceId();
+        $this->referenceId  = $this->generateReferenceId();
+        $this->amount       = Money::EUR(0);
     }
 
     public function getState()
@@ -39,7 +39,7 @@ class Payment implements PaymentInterface
 
     public function pay(PaymentMethodInterface $method)
     {
-        if (null === $this->amount) {
+        if (null === $this->amount || $this->amount->getAmount() <= 0) {
             throw new RequiredAmountException('Payment amount is required.');
         }
 
