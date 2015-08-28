@@ -30,7 +30,6 @@ class Payment implements PaymentInterface
     public function __construct()
     {
         $this->referenceId = $this->generateReferenceId();
-        $this->entries     = new ArrayCollection();
     }
 
     public function getState()
