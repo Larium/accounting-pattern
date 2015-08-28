@@ -27,8 +27,6 @@ class Payment implements PaymentInterface
 
     protected $referenceId;
 
-    protected $entries;
-
     public function __construct()
     {
         $this->referenceId = $this->generateReferenceId();
@@ -104,6 +102,6 @@ class Payment implements PaymentInterface
 
     private function generateReferenceId()
     {
-       return substr(uniqid('pm_', true), 0, -9);
+        return substr(uniqid('pm_', true), 0, -9);
     }
 }
