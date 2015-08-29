@@ -109,7 +109,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
         $this->payment->pay($this->getCreditCardMethod());
 
-        $eventHandler = new \Larium\Service\EventHandler(
+        $eventHandler = new \Larium\Event\EventHandler(
             new \Larium\Listener\PaymentListener(),
             $this->payment->popEvents()
         );
