@@ -51,16 +51,16 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
         $trx = new Transaction();
 
-        $trx->add($amount->multiply(-1), $buyer, Entry::PAYMENT);
-        $trx->add($amount->subtract($prvAmount), $seller, Entry::PAYMENT);
-        $trx->add($prvAmount->subtract($bankAmount), $provider, Entry::FEE);
-        $trx->add($bankAmount, $bank, Entry::FEE);
+        $trx->add($amount->multiply(-1), $buyer, null, Entry::PAYMENT);
+        $trx->add($amount->subtract($prvAmount), $seller, null, Entry::DEPOSIT);
+        $trx->add($prvAmount->subtract($bankAmount), $provider, null, Entry::FEE);
+        $trx->add($bankAmount, $bank, null, Entry::FEE);
         $trx->post();
 
         foreach ($trx->getEntries() as $entry) {
             echo $entry->getAccount()->getDescription()
                 . ' Amount: ' . $entry->getAmount()->getAmount()
-                . ' ['.$entry->getType().']'
+                . ' ['.$entry->getTypeString().']'
                 . PHP_EOL;
         }
     }

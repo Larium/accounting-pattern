@@ -24,7 +24,7 @@ class Transaction
         $this->entries  = new ArrayCollection();
     }
 
-    public function add(Money $amount, Account $account, $descriptor, $type)
+    public function add(Money $amount, Account $account, $descriptor = null, $type = null)
     {
         $this->entries->add(
             new Entry($amount, $this->date, $account, $this, $descriptor, $type)
@@ -56,7 +56,7 @@ class Transaction
 
     public function getLinkedEntry(Entry $entry)
     {
-        return $this->entries->filter(function($e) use ($entry) {
+        return $this->entries->filter(function ($e) use ($entry) {
             return $e !== $entry;
         })->first();
     }

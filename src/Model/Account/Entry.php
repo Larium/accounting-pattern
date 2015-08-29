@@ -12,10 +12,16 @@ class Entry
 {
     const DEPOSIT  = 1;
     const WITHDRAW = 2;
+    const PAYMENT  = 3;
+    const FEE      = 4;
+    const REFUND   = 5;
 
     private static $types = array(
         1 => 'deposit',
-        2 => 'withdraw'
+        2 => 'withdraw',
+        3 => 'payment',
+        4 => 'fee',
+        5 => 'refund'
     );
 
     protected $amount;
@@ -35,8 +41,8 @@ class Entry
         DateTime $date,
         Account $account,
         Transaction $transaction,
-        DescriptorInterface $descriptor,
-        $type
+        DescriptorInterface $descriptor = null,
+        $type = null
     ) {
         $this->amount       = $amount;
         $this->createdAt    = $date;
@@ -44,8 +50,6 @@ class Entry
         $this->transaction  = $transaction;
         $this->descriptor   = $descriptor;
         $this->type         = $type;
-
-        $this->descriptor->addEntry($this);
     }
 
     public function post()

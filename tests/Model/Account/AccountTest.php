@@ -17,6 +17,8 @@ class AccountTest extends \PHPUnit_Framework_TestCase
         $bank      = new Account('Bank');
         $payment   = new PaymentStub(Money::EUR(1000));
 
+        $payment = null;
+
         $amount = Money::EUR(1000);
         $seller->deposit($amount, $buyer, $payment);
 
@@ -33,7 +35,7 @@ class AccountTest extends \PHPUnit_Framework_TestCase
         $this->showAccountEntries($provider);
         $this->showAccountEntries($bank);
 
-        $this->showPaymentEntries($payment);
+        //$this->showPaymentEntries($payment);
     }
 
     private function writeln($string)
@@ -55,8 +57,7 @@ class AccountTest extends \PHPUnit_Framework_TestCase
         $this->writeln($payment->getDescription() . ' Transactions');
         foreach ($payment->getEntries() as $entry) {
             $this->writeln(
-                $entry->getAccount()->getDescription()
-                 . ' : ' . $entry->getTypeString() . ' : ' . $entry->getAmountString()
+                $entry->getAccount()->getDescription() . ' : ' . $entry->getTypeString() . ' : ' . $entry->getAmountString()
             );
         }
     }

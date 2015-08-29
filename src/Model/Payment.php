@@ -12,6 +12,8 @@ use Money\Money;
 
 class Payment implements PaymentInterface
 {
+    use AggregateRoot;
+
     const PENDING           = 'pending';
     const PAID              = 'paid';
     const FAILED            = 'failed';
@@ -48,11 +50,13 @@ class Payment implements PaymentInterface
         if ($response->isSuccess()) {
             $this->transactionId = $response->getTransactionId();
             $this->state         = static::PAID;
+            $this->raise('paymentCaptured', ['payment' => $this]);
 
             return $response;
         }
 
         $this->state = static::FAILED;
+        $this->raise('paymentCaptureFailed', ['payment' => $this]);
 
         return $response;
     }
