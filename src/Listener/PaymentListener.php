@@ -13,7 +13,7 @@ class PaymentListener
         echo sprintf('Payment %s was created', $event->payment->getReferenceId());
     }
 
-    public function paymentCapturedFailed(DomainEvent $event)
+    public function paymentCaptureFailed(DomainEvent $event)
     {
         echo sprintf('Payment %s failed!', $event->payment->getReferenceId());
     }

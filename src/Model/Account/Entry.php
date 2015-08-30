@@ -32,8 +32,6 @@ class Entry
 
     protected $transaction;
 
-    protected $descriptor;
-
     protected $type;
 
     public function __construct(
@@ -41,14 +39,12 @@ class Entry
         DateTime $date,
         Account $account,
         Transaction $transaction,
-        DescriptorInterface $descriptor = null,
-        $type = null
+        $type
     ) {
         $this->amount       = $amount;
         $this->createdAt    = $date;
         $this->account      = $account;
         $this->transaction  = $transaction;
-        $this->descriptor   = $descriptor;
         $this->type         = $type;
     }
 
@@ -94,5 +90,10 @@ class Entry
         return array_key_exists($this->type, static::$types)
             ? static::$types[$this->type]
             : 'unknown';
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 }

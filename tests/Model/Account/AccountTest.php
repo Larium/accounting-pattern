@@ -34,8 +34,6 @@ class AccountTest extends \PHPUnit_Framework_TestCase
         $this->showAccountEntries($seller);
         $this->showAccountEntries($provider);
         $this->showAccountEntries($bank);
-
-        //$this->showPaymentEntries($payment);
     }
 
     private function writeln($string)
@@ -49,16 +47,6 @@ class AccountTest extends \PHPUnit_Framework_TestCase
         $this->writeln($account->getDescription() . ' Transactions');
         foreach ($account->getEntries() as $entry) {
             $this->writeln($entry->getTypeString() . ' : ' . $entry->getAmountString());
-        }
-    }
-
-    private function showPaymentEntries($payment)
-    {
-        $this->writeln($payment->getDescription() . ' Transactions');
-        foreach ($payment->getEntries() as $entry) {
-            $this->writeln(
-                $entry->getAccount()->getDescription() . ' : ' . $entry->getTypeString() . ' : ' . $entry->getAmountString()
-            );
         }
     }
 }

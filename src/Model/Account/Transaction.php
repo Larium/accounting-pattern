@@ -24,10 +24,10 @@ class Transaction
         $this->entries  = new ArrayCollection();
     }
 
-    public function add(Money $amount, Account $account, $descriptor = null, $type = null)
+    public function add(Money $amount, Account $account, $type)
     {
         $this->entries->add(
-            new Entry($amount, $this->date, $account, $this, $descriptor, $type)
+            new Entry($amount, $this->date, $account, $this, $type)
         );
     }
 
@@ -58,6 +58,20 @@ class Transaction
     {
         return $this->entries->filter(function ($e) use ($entry) {
             return $e !== $entry;
+        })->first();
+    }
+
+    public function getFeeEntry()
+    {
+        return $this->entries->filter(function ($e) {
+            return $e->getType() === Entry::FEE;
+        })->first();
+    }
+
+    public function getPaymentEntry()
+    {
+        return $this->entries->filter(function ($e) {
+            return $e->getType() === Entry::PAYMENT;
         })->first();
     }
 

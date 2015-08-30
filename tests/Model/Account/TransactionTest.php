@@ -15,8 +15,8 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
         $transaction = new Transaction();
 
-        $transaction->add(Money::EUR(-1000), $buyer); # get 10 from buyer account
-        $transaction->add(Money::EUR(1000), $seller); # set 10 to seller account
+        $transaction->add(Money::EUR(-1000), $buyer, Entry::PAYMENT); # get 10 from buyer account
+        $transaction->add(Money::EUR(1000), $seller, Entry::PAYMENT); # set 10 to seller account
         $transaction->post();
 
         # Both account should have entries.
@@ -50,12 +50,12 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $bankAmount = $bankFee->apply($amount);
 
         $trx = new Transaction();
-
-        $trx->add($amount->multiply(-1), $buyer, null, Entry::PAYMENT);
-        $trx->add($amount->subtract($prvAmount), $seller, null, Entry::DEPOSIT);
-        $trx->add($prvAmount->subtract($bankAmount), $provider, null, Entry::FEE);
-        $trx->add($bankAmount, $bank, null, Entry::FEE);
+        $trx->add($amount->multiply(-1), $buyer, Entry::PAYMENT);
+        $trx->add($amount->subtract($prvAmount), $seller, Entry::DEPOSIT);
+        $trx->add($prvAmount, $provider, Entry::FEE);
         $trx->post();
+        //$trx->add($prvAmount->subtract($bankAmount), $provider, null, Entry::FEE);
+        //$trx->add($bankAmount, $bank, null, Entry::FEE);
 
         foreach ($trx->getEntries() as $entry) {
             echo $entry->getAccount()->getDescription()
@@ -63,5 +63,23 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
                 . ' ['.$entry->getTypeString().']'
                 . PHP_EOL;
         }
+
+        $this->showAccountEntries($seller);
+    }
+
+    private function showAccountEntries($account)
+    {
+        $this->writeln($account->getDescription() . ' Transactions');
+        foreach ($account->getEntries() as $entry) {
+            $this->writeln('Payment: ' . $entry->getTransaction()->getPaymentEntry()->getAmountString());
+            $this->writeln('Fee: ' . $entry->getTransaction()->getFeeEntry()->getAmountString());
+            $this->writeln($entry->getTypeString() . ' : ' . $entry->getAmountString());
+        }
+    }
+
+    private function writeln($string)
+    {
+        echo PHP_EOL;
+        echo $string . PHP_EOL;
     }
 }

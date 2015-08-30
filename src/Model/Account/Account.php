@@ -37,19 +37,19 @@ class Account
         return $this->description;
     }
 
-    public function withdraw(Money $amount, Account $target, $descriptor)
+    public function withdraw(Money $amount, Account $target)
     {
         $trx = new Transaction();
-        $trx->add($amount->multiply(-1), $this, $descriptor, Entry::WITHDRAW);
-        $trx->add($amount, $target, $descriptor, Entry::DEPOSIT);
+        $trx->add($amount->multiply(-1), $this, Entry::WITHDRAW);
+        $trx->add($amount, $target, Entry::DEPOSIT);
         $trx->post();
     }
 
-    public function deposit(Money $amount, Account $source, $descriptor)
+    public function deposit(Money $amount, Account $source)
     {
         $trx = new Transaction();
-        $trx->add($amount, $this, $descriptor, Entry::DEPOSIT);
-        $trx->add($amount->multiply(-1), $source, $descriptor, Entry::WITHDRAW);
+        $trx->add($amount, $this, Entry::DEPOSIT);
+        $trx->add($amount->multiply(-1), $source, Entry::WITHDRAW);
         $trx->post();
     }
 }
