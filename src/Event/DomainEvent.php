@@ -5,13 +5,37 @@
 namespace Larium\Event;
 
 use DateTime;
+use RuntimeException;
+use Symfony\Component\EventDispatcher\Event;
 
-abstract class DomainEvent
+class DomainEvent extends Event
 {
-    protected $occuredOn;
+    protected $eventName;
 
-    public function __construct()
+    protected $date;
+
+    public function __construct($eventName, array $params)
     {
-        $this->occuredOn = new DateTime();
+        $this->eventName = $eventName;
+        $this->params    = $params;
+        $this->date      = new DateTime();
+    }
+
+    public function getName()
+    {
+        return $this->eventName;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function __get($name)
+    {
+        if (!isset($this->params[$name])) {
+            throw new RuntimeException("Property '" . $name . "' does not exist on event '" . $this->eventName);
+        }
+        return $this->params[$name];
     }
 }

@@ -4,7 +4,7 @@
 
 namespace Larium\Listener;
 
-use Larium\Model\DomainEvent;
+use Larium\Event\DomainEvent;
 
 class PaymentListener
 {
