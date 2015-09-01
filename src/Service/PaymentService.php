@@ -6,6 +6,7 @@ namespace Larium\Service;
 
 use Larium\Model\Payment;
 use Larium\Model\Method\CreditCardMethod;
+use Larium\Model\Account\Account;
 use Larium\Listener\PaymentListener;
 use Larium\Event\EventHandler;
 use AktiveMerchant\Billing\Base;
@@ -40,7 +41,6 @@ class PaymentService
         $response = $payment->pay($this->getPaymentMethod($data));
 
         $this->getEventHandler($payment->popEvents())->handle();
-
     }
 
     private function getPaymentMethod(array $card)
@@ -65,6 +65,8 @@ class PaymentService
 
     private function getEventHandler(array $events)
     {
-        return new EventHandler(new PaymentListener(), $events);
+        $merchant = new Account('Merchant');
+        $buyer    = new Account('Buyer');
+        return new EventHandler(new PaymentListener($merchant, $buyer), $events);
     }
 }

@@ -6,7 +6,7 @@ namespace Larium\Model\Account;
 
 use Money\Money;
 use DateTime;
-use Larium\Model\DescriptorInterface;
+use Larium\Model\Event\DomainEvent;
 
 class Entry
 {
@@ -34,18 +34,22 @@ class Entry
 
     protected $type;
 
+    protected $event;
+
     public function __construct(
         Money $amount,
         DateTime $date,
         Account $account,
         Transaction $transaction,
-        $type
+        $type,
+        DomainEvent $event = null
     ) {
         $this->amount       = $amount;
         $this->createdAt    = $date;
         $this->account      = $account;
         $this->transaction  = $transaction;
         $this->type         = $type;
+        $this->event        = $event;
     }
 
     public function post()

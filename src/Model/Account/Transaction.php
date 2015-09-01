@@ -5,10 +5,11 @@
 namespace Larium\Model\Account;
 
 use DateTime;
+use Money\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Larium\Exception\UnableToPostException;
 use Larium\Money\DescriptorInterface;
-use Money\Money;
+use Larium\Model\Event\DomainEvent;
 
 class Transaction
 {
@@ -24,10 +25,10 @@ class Transaction
         $this->entries  = new ArrayCollection();
     }
 
-    public function add(Money $amount, Account $account, $type)
+    public function add(Money $amount, Account $account, $type, DomainEvent $event = null)
     {
         $this->entries->add(
-            new Entry($amount, $this->date, $account, $this, $type)
+            new Entry($amount, $this->date, $account, $this, $type, $event)
         );
     }
 

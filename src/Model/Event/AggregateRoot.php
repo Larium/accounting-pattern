@@ -2,7 +2,7 @@
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-namespace Larium\Event;
+namespace Larium\Model\Event;
 
 trait AggregateRoot
 {

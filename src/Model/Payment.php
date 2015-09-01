@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Larium\Exception\RequiredAmountException;
 use Larium\Model\Method\PaymentMethodInterface;
 use Larium\Model\Method\CreditMethodInterface;
-use Larium\Event\AggregateRoot;
+use Larium\Model\Event\AggregateRoot;
 use Money\Money;
 
 class Payment implements PaymentInterface
