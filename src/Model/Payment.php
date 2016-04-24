@@ -31,8 +31,8 @@ class Payment implements PaymentInterface
 
     public function __construct()
     {
-        $this->referenceId  = $this->generateReferenceId();
-        $this->amount       = Money::EUR(0);
+        $this->referenceId = $this->generateReferenceId();
+        $this->amount = Money::EUR(0);
     }
 
     public function getState()
@@ -50,7 +50,7 @@ class Payment implements PaymentInterface
 
         if ($response->isSuccess()) {
             $this->transactionId = $response->getTransactionId();
-            $this->state         = static::PAID;
+            $this->state = static::PAID;
             $this->raise('paymentCaptured', ['payment' => $this]);
 
             return $response;
