@@ -30,8 +30,9 @@ class Fee
 
     public function apply(Money $amount)
     {
+        $currency = $amount->getCurrency();
         return $amount->multiply($this->percentage)
             ->divide(100)
-            ->add(Money::EUR($this->flat));
+            ->add(new Money($this->flat, $currency));
     }
 }
