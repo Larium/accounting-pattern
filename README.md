@@ -6,6 +6,6 @@ The concept is that a Payment provider process a Payment Transction, on behalf o
 
 Payment provider MUST stores the Transaction and MUST creates [Account Entries](http://martinfowler.com/eaaDev/AccountingEntry.html) for each of the participants.
 
-[Account Entries](http://martinfowler.com/eaaDev/AccountingEntry.html) are creates through an [Accounting Transaction](http://martinfowler.com/eaaDev/AccountingTransaction.html).
+[Account Entries](http://martinfowler.com/eaaDev/AccountingEntry.html) are created through an [Accounting Transaction](http://martinfowler.com/eaaDev/AccountingTransaction.html).
 
 All entries are created through an Event Dispatcher after Payment was created.
