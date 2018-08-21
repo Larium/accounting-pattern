@@ -2,7 +2,7 @@
 
 Payment process and Account handling using [Accounting Patterns](http://martinfowler.com/eaaDev/).
 
-The concept is that a Payment provider process a Payment Transction, on behalf of a Merchant.
+The concept is that a Payment provider process a Payment Transaction, on behalf of a Merchant.
 
 Payment provider MUST stores the Transaction and MUST creates [Account Entries](http://martinfowler.com/eaaDev/AccountingEntry.html) for each of the participants.
 
