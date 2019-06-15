@@ -5,12 +5,13 @@
 namespace Larium\Model\Method;
 
 use Money\Money;
+use PHPUnit\Framework\TestCase;
 
-class PaymentMethodTest extends \PHPUnit_Framework_TestCase
+class PaymentMethodTest extends TestCase
 {
     private $method;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->method = new PaymentMethod();
     }

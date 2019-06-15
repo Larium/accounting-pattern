@@ -64,7 +64,7 @@ class Entry
 
     public function getAmountString()
     {
-        return $this->amount->getCurrency()->getName()
+        return $this->amount->getCurrency()->getCode()
             . ' '
             . number_format($this->amount->getAmount() / 100, 2);
     }

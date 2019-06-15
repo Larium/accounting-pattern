@@ -4,7 +4,9 @@
 
 namespace Larium\Service;
 
-class PaymentServiceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PaymentServiceTest extends TestCase
 {
     public function testPayService()
     {

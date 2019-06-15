@@ -35,7 +35,9 @@ class Transaction
     public function post()
     {
         if (false === $this->canPost()) {
-            throw new UnableToPostException();
+            throw new UnableToPostException(
+                sprintf('The balance is not zero (%s)', $this->balance()->getAmount())
+            );
         }
 
         foreach ($this->entries as $entry) {
@@ -47,7 +49,7 @@ class Transaction
 
     public function canPost()
     {
-        return 0 === $this->balance()->getAmount();
+        return Money::EUR(0)->equals($this->balance());
     }
 
     public function getEntries()

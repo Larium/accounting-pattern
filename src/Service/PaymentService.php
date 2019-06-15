@@ -17,7 +17,6 @@ class PaymentService
 {
     public function __construct()
     {
-
     }
 
     /**
@@ -67,6 +66,7 @@ class PaymentService
     {
         $merchant = new Account('Merchant');
         $buyer    = new Account('Buyer');
+
         return new EventHandler(new PaymentListener($merchant, $buyer), $events);
     }
 }

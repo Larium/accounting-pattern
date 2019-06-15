@@ -5,8 +5,9 @@
 namespace Larium\Model\Account;
 
 use Money\Money;
+use PHPUnit\Framework\TestCase;
 
-class TransactionTest extends \PHPUnit_Framework_TestCase
+class TransactionTest extends TestCase
 {
     public function testTwoLeggedAccountTransaction()
     {

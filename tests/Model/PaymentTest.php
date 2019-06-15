@@ -11,12 +11,13 @@ use Larium\Model\Method\PaymentMethod;
 use Larium\Model\Method\CreditCardMethod;
 use Larium\Model\Account\Account;
 use Money\Money;
+use PHPUnit\Framework\TestCase;
 
-class PaymentTest extends \PHPUnit_Framework_TestCase
+class PaymentTest extends TestCase
 {
     private $payment;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->payment = new Payment();
     }
@@ -44,7 +45,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
     public function testPaymentShouldNotBePaidWithoutAnAmount()
     {
-        $this->setExpectedException(
+        $this->expectException(
             'Larium\Exception\RequiredAmountException',
             'Payment amount is required.'
         );
@@ -98,7 +99,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldHandleCreditCardMethodException()
     {
-        $this->setExpectedException('Larium\Exception\GatewayException');
+        $this->expectException('Larium\Exception\GatewayException');
 
         $this->payment->setAmount(Money::EUR(100));
         $this->payment->pay($this->getCreditCardMethod('exception'));

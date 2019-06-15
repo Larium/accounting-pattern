@@ -1,8 +1,8 @@
 {
-    "name": "larium/freemium",
-    "description": "",
-    "keywords": [""],
-    "type": "",
+    "name": "larium/accounting-pattern",
+    "description": "Payment demo application using accounting pattern.",
+    "keywords": ["accounting pattern", "payment"],
+    "type": "application",
     "license": "MIT",
     "authors": [
         {
@@ -14,7 +14,10 @@
         "php": ">=5.4",
         "aktive_merchant/aktive_merchant": "dev-dev-1.1",
         "doctrine/collections": "~1.3",
-        "mathiasverraes/money": "~1.2"
+        "moneyphp/money": "~3.2.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~8.0.0"
     },
     "minimum-stability": "stable",
     "autoload": {

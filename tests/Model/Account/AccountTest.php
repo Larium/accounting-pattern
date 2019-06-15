@@ -6,8 +6,9 @@ namespace Larium\Model\Account;
 
 use Money\Money;
 use Larium\Model\PaymentStub;
+use PHPUnit\Framework\TestCase;
 
-class AccountTest extends \PHPUnit_Framework_TestCase
+class AccountTest extends TestCase
 {
     public function testAccountActions()
     {
