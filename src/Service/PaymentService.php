@@ -66,7 +66,7 @@ class PaymentService
     private function getEventHandler(array $events): EventHandler
     {
         $merchant = new Account('Merchant');
-        $buyer    = new Account('Buyer');
+        $buyer = new Account('Buyer');
 
         return new EventHandler(new PaymentListener($merchant, $buyer), $events);
     }

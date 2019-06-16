@@ -11,7 +11,7 @@ use ReflectionMethod;
 class EventHandler
 {
     /**
-     * @var EventDsipatcher
+     * @var EventDispatcher
      */
     protected $dispatcher;
 

@@ -13,12 +13,12 @@ use Larium\Model\Account\Transaction;
 class PaymentListener
 {
     /**
-     * @var void
+     * @var bool
      */
     private $captured = false;
 
     /**
-     * @var void
+     * @var bool
      */
     private $failed = false;
 
