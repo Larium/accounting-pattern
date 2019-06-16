@@ -6,8 +6,8 @@ namespace Larium\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Larium\Exception\RequiredAmountException;
+use Larium\Model\Method\CreditMethod;
 use Larium\Model\Method\PaymentMethodInterface;
-use Larium\Model\Method\CreditMethodInterface;
 use Larium\Model\Event\AggregateRoot;
 use Money\Money;
 
@@ -83,8 +83,8 @@ class Payment implements PaymentInterface
         if ($response->isSuccess()) {
             $this->state = static::REFUNDED;
 
-            if ($refundMoney->lessThan($money)) {
-                $this->state = state::PARTIAL_REFUNDED;
+            if ($refundMoney->lessThan($this->amount)) {
+                $this->state = self::PARTIAL_REFUNDED;
             }
         }
 
