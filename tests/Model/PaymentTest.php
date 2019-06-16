@@ -7,6 +7,8 @@ namespace Larium\Model;
 use AktiveMerchant\Billing\CreditCard;
 use AktiveMerchant\Billing\Gateways\Bogus;
 use AktiveMerchant\Billing\Base;
+use Larium\Event\EventHandler;
+use Larium\Listener\PaymentListener;
 use Larium\Model\Method\PaymentMethod;
 use Larium\Model\Method\CreditCardMethod;
 use Larium\Model\Account\Account;
@@ -110,13 +112,16 @@ class PaymentTest extends TestCase
         $this->payment->setAmount(Money::EUR(100));
 
         $this->payment->pay($this->getCreditCardMethod());
+        $listener = new PaymentListener(new Account('merchant'), new Account('buyer'));
 
-        $eventHandler = new \Larium\Event\EventHandler(
-            new \Larium\Listener\PaymentListener(new Account('merchant'), new Account('buyer')),
+        $eventHandler = new EventHandler(
+            $listener,
             $this->payment->popEvents()
         );
 
         $eventHandler->handle();
+
+        $this->assertTrue($listener->isCaptured());
     }
 
     private function getPaymentMethod()

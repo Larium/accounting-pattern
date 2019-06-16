@@ -59,28 +59,17 @@ class TransactionTest extends TestCase
         //$trx->add($bankAmount, $bank, null, Entry::FEE);
 
         foreach ($trx->getEntries() as $entry) {
-            echo $entry->getAccount()->getDescription()
-                . ' Amount: ' . $entry->getAmount()->getAmount()
-                . ' ['.$entry->getTypeString().']'
-                . PHP_EOL;
+            if ($entry->getType() === Entry::PAYMENT) {
+                $this->assertEquals(Money::EUR("-1000"), $entry->getAmount());
+            }
+
+            if ($entry->getType() === Entry::FEE) {
+                $this->assertEquals(Money::EUR("44"), $entry->getAmount());
+            }
+
+            if ($entry->getType() === Entry::DEPOSIT) {
+                $this->assertEquals(Money::EUR("956"), $entry->getAmount());
+            }
         }
-
-        $this->showAccountEntries($seller);
-    }
-
-    private function showAccountEntries($account)
-    {
-        $this->writeln($account->getDescription() . ' Transactions');
-        foreach ($account->getEntries() as $entry) {
-            $this->writeln('Payment: ' . $entry->getTransaction()->getPaymentEntry()->getAmountString());
-            $this->writeln('Fee: ' . $entry->getTransaction()->getFeeEntry()->getAmountString());
-            $this->writeln($entry->getTypeString() . ' : ' . $entry->getAmountString());
-        }
-    }
-
-    private function writeln($string)
-    {
-        echo PHP_EOL;
-        echo $string . PHP_EOL;
     }
 }

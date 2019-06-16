@@ -32,22 +32,20 @@ class AccountTest extends TestCase
 
         $bank->deposit($bankAmount, $provider, $payment);
 
-        $this->showAccountEntries($seller);
-        $this->showAccountEntries($provider);
-        $this->showAccountEntries($bank);
+        $this->checkAccountEntries($seller, Money::EUR("1000"), Money::EUR("-44"));
+        $this->checkAccountEntries($provider, Money::EUR("44"), Money::EUR("-14"));
+        $this->checkAccountEntries($bank, Money::EUR("14"), Money::EUR(0));
     }
 
-    private function writeln($string)
+    private function checkAccountEntries(Account $account, Money $deposit, Money $withdraw)
     {
-        echo PHP_EOL;
-        echo $string . PHP_EOL;
-    }
-
-    private function showAccountEntries($account)
-    {
-        $this->writeln($account->getDescription() . ' Transactions');
         foreach ($account->getEntries() as $entry) {
-            $this->writeln($entry->getTypeString() . ' : ' . $entry->getAmountString());
+            if ($entry->getType() == Entry::DEPOSIT) {
+                $this->assertEquals($deposit, $entry->getAmount());
+            }
+            if ($entry->getType() == Entry::WITHDRAW) {
+                $this->assertEquals($withdraw, $entry->getAmount());
+            }
         }
     }
 }

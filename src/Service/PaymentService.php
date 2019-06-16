@@ -11,6 +11,7 @@ use Larium\Listener\PaymentListener;
 use Larium\Event\EventHandler;
 use AktiveMerchant\Billing\Base;
 use AktiveMerchant\Billing\CreditCard;
+use Larium\Model\ResponseInterface;
 use Money\Money;
 
 class PaymentService
@@ -30,9 +31,9 @@ class PaymentService
      * - creditcard_year
      *
      * @param array $data
-     * @return void
+     * @return ResponseInterface
      */
-    public function pay(array $data)
+    public function pay(array $data): ResponseInterface
     {
         $payment = new Payment();
         $payment->setAmount(Money::EUR($data['amount']));
@@ -40,6 +41,8 @@ class PaymentService
         $response = $payment->pay($this->getPaymentMethod($data));
 
         $this->getEventHandler($payment->popEvents())->handle();
+
+        return $response;
     }
 
     private function getPaymentMethod(array $card)

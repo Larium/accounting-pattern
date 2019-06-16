@@ -17,7 +17,7 @@ class EventHandler
     public function __construct($listener, array $events)
     {
         $this->dispatcher = new EventDispatcher();
-        $this->events     = $events;
+        $this->events = $events;
         $this->registerListener($listener);
     }
 

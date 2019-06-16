@@ -12,6 +12,10 @@ use Larium\Model\Account\Transaction;
 
 class PaymentListener
 {
+    private $caprured = false;
+
+    private $failed = false;
+
     public function __construct(Account $merchant, Account $buyer)
     {
         $this->merchant = $merchant;
@@ -32,11 +36,22 @@ class PaymentListener
         $trx->add($amount->subtract($prvAmount), $this->merchant, Entry::DEPOSIT, $event);
         $trx->add($prvAmount, $provider, Entry::FEE, $event);
         $trx->post();
-        //echo sprintf('Payment %s was created', $event->payment->getReferenceId());
+
+        $this->captured = true;
     }
 
     public function paymentCaptureFailed(DomainEvent $event)
     {
-        echo sprintf('Payment %s failed!', $event->payment->getReferenceId());
+        $this->failed = true;
+    }
+
+    public function isCaptured(): bool
+    {
+        return $this->captured;
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->failed;
     }
 }

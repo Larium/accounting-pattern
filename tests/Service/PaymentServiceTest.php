@@ -22,6 +22,8 @@ class PaymentServiceTest extends TestCase
             'creditcard_year' => '2020',
         ];
 
-        $service->pay($data);
+        $response = $service->pay($data);
+
+        $this->assertTrue($response->isSuccess());
     }
 }
