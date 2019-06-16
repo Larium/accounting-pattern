@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Event;
 
@@ -10,25 +10,31 @@ use ReflectionMethod;
 
 class EventHandler
 {
+    /**
+     * @var EventDsipatcher
+     */
     protected $dispatcher;
 
+    /**
+     * @var array
+     */
     protected $events;
 
-    public function __construct($listener, array $events)
+    public function __construct(object $listener, array $events)
     {
         $this->dispatcher = new EventDispatcher();
         $this->events = $events;
         $this->registerListener($listener);
     }
 
-    public function handle()
+    public function handle(): void
     {
         foreach ($this->events as $event) {
             $this->dispatcher->dispatch($event->getName(), $event);
         }
     }
 
-    private function registerListener($listener)
+    private function registerListener(object $listener): void
     {
         $methods = (new ReflectionClass($listener))
             ->getMethods(ReflectionMethod::IS_PUBLIC);

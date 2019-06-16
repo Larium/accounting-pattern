@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model\Account;
 
@@ -8,29 +8,36 @@ use Money\Money;
 
 class Fee
 {
-    protected $percentage = 0;
+    /**
+     * @var float
+     */
+    private $percentage = 0;
 
-    protected $flat = 0;
+    /**
+     * @var int
+     */
+    private $flat = 0;
 
-    public function __construct($percentage, $flat)
+    public function __construct(float $percentage, int $flat)
     {
         $this->percentage = $percentage;
-        $this->flat       = $flat;
+        $this->flat = $flat;
     }
 
-    public function getPercentage()
+    public function getPercentage(): float
     {
         return $this->percentage;
     }
 
-    public function getFlat()
+    public function getFlat(): int
     {
         return $this->flat;
     }
 
-    public function apply(Money $amount)
+    public function apply(Money $amount): Money
     {
         $currency = $amount->getCurrency();
+
         return $amount->multiply($this->percentage)
             ->divide(100)
             ->add(new Money($this->flat, $currency));

@@ -1,14 +1,14 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model;
 
 interface ResponseInterface
 {
-    public function isSuccess();
+    public function isSuccess(): bool;
 
-    public function getTransactionId();
+    public function getTransactionId(): ?string;
 
-    public function getMessage();
+    public function getMessage(): ?string;
 }

@@ -1,9 +1,10 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model\Account;
 
+use Larium\Model\DescriptorInterface;
 use Money\Money;
 use DateTime;
 use Larium\Model\Event\DomainEvent;
@@ -24,24 +25,42 @@ class Entry
         5 => 'refund'
     );
 
-    protected $amount;
+    /**
+     * @var Money
+     */
+    private $amount;
 
-    protected $date;
+    /**
+     * @var DateTime
+     */
+    private $date;
 
-    protected $account;
+    /**
+     * @var Account
+     */
+    private $account;
 
-    protected $transaction;
+    /**
+     * @var Transaction
+     */
+    private $transaction;
 
-    protected $type;
+    /**
+     * @var int
+     */
+    private $type;
 
-    protected $event;
+    /**
+     * @var DomainEvent
+     */
+    private $event;
 
     public function __construct(
         Money $amount,
         DateTime $date,
         Account $account,
         Transaction $transaction,
-        $type,
+        int $type,
         DomainEvent $event = null
     ) {
         $this->amount       = $amount;
@@ -52,39 +71,39 @@ class Entry
         $this->event        = $event;
     }
 
-    public function post()
+    public function post(): void
     {
         $this->account->getEntries()->add($this);
     }
 
-    public function getAmount()
+    public function getAmount(): Money
     {
         return $this->amount;
     }
 
-    public function getAmountString()
+    public function getAmountString(): string
     {
         return $this->amount->getCurrency()->getCode()
             . ' '
             . number_format($this->amount->getAmount() / 100, 2);
     }
 
-    public function getDate()
+    public function getDate(): DateTime
     {
         return $this->date;
     }
 
-    public function getAccount()
+    public function getAccount(): Account
     {
         return $this->account;
     }
 
-    public function getTransaction()
+    public function getTransaction(): Transaction
     {
         return $this->transaction;
     }
 
-    public function getDescriptor()
+    public function getDescriptor(): DescriptorInterface
     {
         return $this->descriptor;
     }
