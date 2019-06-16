@@ -1,9 +1,11 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Service;
 
+use AktiveMerchant\Billing\Gateway;
+use Larium\Model\Method\PaymentMethodInterface;
 use Larium\Model\Payment;
 use Larium\Model\Method\CreditCardMethod;
 use Larium\Model\Account\Account;
@@ -16,10 +18,6 @@ use Money\Money;
 
 class PaymentService
 {
-    public function __construct()
-    {
-    }
-
     /**
      * Pay method for service.
      * Available data options
@@ -45,7 +43,7 @@ class PaymentService
         return $response;
     }
 
-    private function getPaymentMethod(array $card)
+    private function getPaymentMethod(array $card): PaymentMethodInterface
     {
         $gateway = $this->getGateway();
         $cardData = [];
@@ -60,15 +58,15 @@ class PaymentService
         return new CreditCardMethod($creditCard, $gateway);
     }
 
-    private function getGateway($name = 'bogus', array $options = array())
+    private function getGateway($name = 'bogus', array $options = array()): Gateway
     {
         return Base::gateway($name, $options);
     }
 
-    private function getEventHandler(array $events)
+    private function getEventHandler(array $events): EventHandler
     {
         $merchant = new Account('Merchant');
-        $buyer    = new Account('Buyer');
+        $buyer = new Account('Buyer');
 
         return new EventHandler(new PaymentListener($merchant, $buyer), $events);
     }

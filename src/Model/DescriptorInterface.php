@@ -1,12 +1,12 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model;
 
 interface DescriptorInterface
 {
-    public function getReferenceId();
+    public function getReferenceId(): string;
 
-    public function getDescription();
+    public function getDescription(): string;
 }

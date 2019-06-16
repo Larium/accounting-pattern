@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model;
 
@@ -15,12 +15,12 @@ class PaymentStub extends Payment
         $this->state  = static::PAID;
     }
 
-    public function getAmount()
+    public function getAmount(): Money
     {
         return $this->amount;
     }
 
-    public function getReferenceId()
+    public function getReferenceId(): string
     {
         return $this->referenceId;
     }

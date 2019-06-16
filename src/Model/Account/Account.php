@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model\Account;
 
@@ -9,35 +9,34 @@ use Money\Money;
 
 class Account
 {
-    protected $balance;
+    /**
+     * @var ArrayCollection
+     */
+    private $entries;
 
-    protected $entries;
+    /**
+     * @var string
+     */
+    private $description;
 
-    protected $description;
-
-    public function __construct($description)
+    public function __construct(string $description)
     {
         $this->entries = new ArrayCollection();
 
         $this->description = $description;
     }
 
-    public function getBalance()
-    {
-        return $this->balance;
-    }
-
-    public function getEntries()
+    public function getEntries(): ArrayCollection
     {
         return $this->entries;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function withdraw(Money $amount, Account $target)
+    public function withdraw(Money $amount, Account $target): void
     {
         $trx = new Transaction();
         $trx->add($amount->multiply(-1), $this, Entry::WITHDRAW);
@@ -45,7 +44,7 @@ class Account
         $trx->post();
     }
 
-    public function deposit(Money $amount, Account $source)
+    public function deposit(Money $amount, Account $source): void
     {
         $trx = new Transaction();
         $trx->add($amount, $this, Entry::DEPOSIT);

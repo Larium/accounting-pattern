@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model\Method;
 
@@ -10,14 +10,24 @@ use AktiveMerchant\Billing\Exception as AktiveMerchantException;
 use Larium\Exception\GatewayException;
 use Larium\Model\Method\PaymentMethodInterface;
 use Larium\Model\Response;
+use Larium\Model\ResponseInterface;
 use Money\Money;
 
 class CreditCardMethod implements PaymentMethodInterface
 {
+    /**
+     * @var CreditCard
+     */
     protected $creditCard;
 
+    /**
+     * @var Gateway
+     */
     protected $gateway;
 
+    /**
+     * @var array
+     */
     protected $actionParams = array();
 
     public function __construct(CreditCard $creditCard, Gateway $gateway)
@@ -26,7 +36,7 @@ class CreditCardMethod implements PaymentMethodInterface
         $this->gateway    = $gateway;
     }
 
-    public function pay(Money $money)
+    public function pay(Money $money): ResponseInterface
     {
         try {
             $response = $this->gateway->purchase($this->amount($money), $this->creditCard, $this->actionParams);
@@ -51,12 +61,12 @@ class CreditCardMethod implements PaymentMethodInterface
         // code...
     }
 
-    public function setActionParams(array $params)
+    public function setActionParams(array $params): void
     {
         $this->actionParams = $params;
     }
 
-    private function amount(Money $money)
+    private function amount(Money $money): string
     {
         $format = $this->gateway->money_format();
 

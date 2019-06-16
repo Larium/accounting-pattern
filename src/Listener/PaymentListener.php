@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Listener;
 
@@ -12,9 +12,25 @@ use Larium\Model\Account\Transaction;
 
 class PaymentListener
 {
-    private $caprured = false;
+    /**
+     * @var bool
+     */
+    private $captured = false;
 
+    /**
+     * @var bool
+     */
     private $failed = false;
+
+    /**
+     * @var Account
+     */
+    private $merchant;
+
+    /**
+     * @var Account
+     */
+    private $buyer;
 
     public function __construct(Account $merchant, Account $buyer)
     {
@@ -22,7 +38,7 @@ class PaymentListener
         $this->buyer    = $buyer;
     }
 
-    public function paymentCaptured(DomainEvent $event)
+    public function paymentCaptured(DomainEvent $event): void
     {
         $provider   = new Account('provider');
         $payment    = $event->payment;
@@ -40,7 +56,7 @@ class PaymentListener
         $this->captured = true;
     }
 
-    public function paymentCaptureFailed(DomainEvent $event)
+    public function paymentCaptureFailed(DomainEvent $event): void
     {
         $this->failed = true;
     }

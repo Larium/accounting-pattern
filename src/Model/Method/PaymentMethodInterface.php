@@ -1,14 +1,15 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model\Method;
 
+use Larium\Model\ResponseInterface;
 use Money\Money;
 
 interface PaymentMethodInterface
 {
-    public function pay(Money $money);
+    public function pay(Money $money): ResponseInterface;
 
-    public function setActionParams(array $params);
+    public function setActionParams(array $params): void;
 }

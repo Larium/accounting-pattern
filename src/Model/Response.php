@@ -1,35 +1,44 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model;
 
 class Response implements ResponseInterface
 {
+    /**
+     * @var bool
+     */
     protected $success;
 
+    /**
+     * @var string
+     */
     protected $transactionId;
 
+    /**
+     * @var string
+     */
     protected $message;
 
-    public function __construct($success, $transactionId = null, $message = null)
+    public function __construct(bool $success, string $transactionId = null, string $message = null)
     {
-        $this->success       = $success;
+        $this->success = $success;
         $this->transactionId = $transactionId;
-        $this->message       = $message;
+        $this->message = $message;
     }
 
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return true === $this->success;
     }
 
-    public function getTransactionId()
+    public function getTransactionId(): ?string
     {
         return $this->transactionId;
     }
 
-    public function getMessage()
+    public function getMessage(): ?string
     {
         return $this->message;
     }

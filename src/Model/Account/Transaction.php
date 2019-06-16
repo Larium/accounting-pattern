@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model\Account;
 
@@ -13,26 +13,35 @@ use Larium\Model\Event\DomainEvent;
 
 class Transaction
 {
+    /**
+     * @var DateTime
+     */
     protected $date;
 
+    /**
+     * @var ArrayCollection
+     */
     protected $entries;
 
+    /**
+     * @var bool
+     */
     protected $wasPosted = false;
 
     public function __construct()
     {
-        $this->date     = new DateTime();
+        $this->date = new DateTime();
         $this->entries  = new ArrayCollection();
     }
 
-    public function add(Money $amount, Account $account, $type, DomainEvent $event = null)
+    public function add(Money $amount, Account $account, int $type, DomainEvent $event = null)
     {
         $this->entries->add(
             new Entry($amount, $this->date, $account, $this, $type, $event)
         );
     }
 
-    public function post()
+    public function post(): void
     {
         if (false === $this->canPost()) {
             throw new UnableToPostException(
@@ -47,44 +56,45 @@ class Transaction
         $this->wasPosted = true;
     }
 
-    public function canPost()
+    public function canPost(): bool
     {
         return Money::EUR(0)->equals($this->balance());
     }
 
-    public function getEntries()
+    public function getEntries(): ArrayCollection
     {
         return $this->entries;
     }
 
-    public function getLinkedEntry(Entry $entry)
+    public function getLinkedEntry(Entry $entry): Entry
     {
         return $this->entries->filter(function ($e) use ($entry) {
             return $e !== $entry;
         })->first();
     }
 
-    public function getFeeEntry()
+    public function getFeeEntry(): Entry
     {
         return $this->entries->filter(function ($e) {
             return $e->getType() === Entry::FEE;
         })->first();
     }
 
-    public function getPaymentEntry()
+    public function getPaymentEntry(): Entry
     {
         return $this->entries->filter(function ($e) {
             return $e->getType() === Entry::PAYMENT;
         })->first();
     }
 
-    private function balance()
+    private function balance(): Money
     {
+        $balance = Money::EUR(0);
+
         if ($this->entries->isEmpty()) {
-            return 0;
+            return $balance;
         }
 
-        $balance = Money::EUR(0);
         foreach ($this->entries as $entry) {
             $balance = $balance->add($entry->getAmount());
         }

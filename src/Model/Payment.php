@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model;
 
@@ -21,12 +21,24 @@ class Payment implements PaymentInterface
     const REFUNDED          = 'refunded';
     const PARTIAL_REFUNDED  = 'partial_refunded';
 
+    /**
+     * @var string
+     */
     protected $state = self::PENDING;
 
-    protected $amount = 0;
+    /**
+     * @var Money
+     */
+    protected $amount;
 
+    /**
+     * @var string
+     */
     protected $transactionId;
 
+    /**
+     * @var string
+     */
     protected $referenceId;
 
     public function __construct()
@@ -35,12 +47,12 @@ class Payment implements PaymentInterface
         $this->amount = Money::EUR(0);
     }
 
-    public function getState()
+    public function getState(): string
     {
         return $this->state;
     }
 
-    public function pay(PaymentMethodInterface $method)
+    public function pay(PaymentMethodInterface $method): ResponseInterface
     {
         if (null === $this->amount || $this->amount->getAmount() <= 0) {
             throw new RequiredAmountException('Payment amount is required.');
@@ -62,7 +74,7 @@ class Payment implements PaymentInterface
         return $response;
     }
 
-    public function refund(CreditMethod $method, Money $money = null)
+    public function refund(CreditMethod $method, Money $money = null): ResponseInterface
     {
         $refundMoney = $money ?: $this->amount;
 
@@ -79,32 +91,32 @@ class Payment implements PaymentInterface
         return $response;
     }
 
-    public function setAmount(Money $amount)
+    public function setAmount(Money $amount): void
     {
         $this->amount = $amount;
     }
 
-    public function getAmount()
+    public function getAmount(): Money
     {
         return $this->amount;
     }
 
-    public function getTransactionId()
+    public function getTransactionId(): string
     {
         return $this->transactionId;
     }
 
-    public function getReferenceId()
+    public function getReferenceId(): string
     {
         return $this->referenceId;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->getReferenceId();
     }
 
-    private function generateReferenceId()
+    private function generateReferenceId(): string
     {
         return substr(uniqid('pm_', true), 0, -9);
     }

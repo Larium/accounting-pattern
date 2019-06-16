@@ -1,6 +1,6 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+declare(strict_types = 1);
 
 namespace Larium\Model\Event;
 
@@ -8,7 +8,7 @@ trait AggregateRoot
 {
     private $events = array();
 
-    public function popEvents()
+    public function popEvents(): array
     {
         $events = $this->events;
         $this->events = array();
@@ -16,7 +16,7 @@ trait AggregateRoot
         return $events;
     }
 
-    protected function raise($eventName, array $properties)
+    protected function raise($eventName, array $properties): void
     {
         $this->events[] = new DomainEvent($eventName, $properties);
     }
