@@ -55,6 +55,11 @@ class Entry
      */
     private $event;
 
+    /**
+     * @var DescriptorInterface
+     */
+    private $descriptor;
+
     public function __construct(
         Money $amount,
         DateTime $date,
@@ -63,12 +68,12 @@ class Entry
         int $type,
         DomainEvent $event = null
     ) {
-        $this->amount       = $amount;
-        $this->createdAt    = $date;
-        $this->account      = $account;
-        $this->transaction  = $transaction;
-        $this->type         = $type;
-        $this->event        = $event;
+        $this->amount = $amount;
+        $this->date = $date;
+        $this->account = $account;
+        $this->transaction = $transaction;
+        $this->type = $type;
+        $this->event = $event;
     }
 
     public function post(): void
@@ -110,8 +115,8 @@ class Entry
 
     public function getTypeString()
     {
-        return array_key_exists($this->type, static::$types)
-            ? static::$types[$this->type]
+        return array_key_exists($this->type, self::$types)
+            ? self::$types[$this->type]
             : 'unknown';
     }
 

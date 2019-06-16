@@ -22,6 +22,16 @@ class PaymentListener
      */
     private $failed = false;
 
+    /**
+     * @var Account
+     */
+    private $merchant;
+
+    /**
+     * @var Account
+     */
+    private $buyer;
+
     public function __construct(Account $merchant, Account $buyer)
     {
         $this->merchant = $merchant;
